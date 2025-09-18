@@ -26,20 +26,26 @@ Uses:
 pip install -r requirements.txt
 ```
 
-3. Run the service:
+3. Run the service (ensure your working directory is WeatherForecastService/):
 
 ```bash
-uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+# Option A: using uvicorn directly
+uvicorn src.api.main:app --host 0.0.0.0 --port 3000 --reload
+
+# Option B: convenience script (sets PYTHONPATH and starts uvicorn on port 3000)
+bash ./run.sh
 ```
 
 4. Open your browser at:
-- Swagger UI: http://localhost:8000/docs
-- Health: http://localhost:8000/
+- Swagger UI: http://localhost:3000/docs
+- Health: http://localhost:3000/
 
 Example request:
 ```
 GET /api/v1/travel-guide?city=Paris
 ```
+
+If you previously saw an error like `Could not import module "main"`, it was due to running `uvicorn main:app` from the wrong directory. Always target `src.api.main:app` and run from the `WeatherForecastService/` directory so imports like `from src.api...` resolve correctly.
 
 ## Environment Variables
 
@@ -77,6 +83,7 @@ WeatherForecastService/
   │       └─ schemas.py             # Re-exported schemas
   ├─ requirements.txt
   ├─ README.md
+  ├─ run.sh                         # Convenience launcher on port 3000
   └─ test_main.py
 ```
 
