@@ -32,8 +32,10 @@ from src.api.utils import (
     mock_popular_places_for_city,
 )
 
+
 # Load environment variables if .env exists
 load_dotenv()
+
 
 # PUBLIC_INTERFACE
 class DailyForecast(BaseModel):
@@ -73,14 +75,18 @@ class TravelGuideResponse(BaseModel):
 app = FastAPI(
     title="WeatherForecastService",
     description=(
-        "FastAPI service that converts a city name into a short travel guide including:\n"
+        "FastAPI service that converts a city name into a short travel guide "
+        "including:\n"
         "- 5-day weather forecast (via Open-Meteo and Nominatim geocoding)\n"
         "- Clothing recommendations derived from the forecast\n"
         "- Popular places to visit (mocked sample data)\n\n"
         "Notes:\n"
-        "- This service uses the Open-Meteo API (no API key required) for weather data.\n"
-        "- It uses the OpenStreetMap Nominatim service (no key) for geocoding city to coordinates.\n"
-        "- Popular places are mocked to keep setup minimal. You can replace with a real API later."
+        "- This service uses the Open-Meteo API (no API key required) for weather "
+        "data.\n"
+        "- It uses the OpenStreetMap Nominatim service (no key) for geocoding city "
+        "to coordinates.\n"
+        "- Popular places are mocked to keep setup minimal. You can replace with a "
+        "real API later."
     ),
     version="1.0.0",
     contact={"name": "Travel Assistant", "url": "https://example.com"},
@@ -119,11 +125,13 @@ def health_check():
         "- Clothing recommendations derived from the forecast\n"
         "- A mocked list of popular places in the city\n\n"
         "Implementation details:\n"
-        "1) City is geocoded to coordinates using Nominatim (no API key required).\n"
+        "1) City is geocoded to coordinates using Nominatim "
+        "(no API key required).\n"
         "2) Weather is fetched from Open-Meteo daily forecast API.\n"
         "3) Clothing tips are generated from weather data.\n"
         "4) Popular places are currently mocked.\n\n"
-        "TODO: Replace mocked places with a public POI API (e.g., Wikipedia, OpenTripMap) if desired."
+        "TODO: Replace mocked places with a public POI API (e.g., Wikipedia, "
+        "OpenTripMap) if desired."
     ),
     operation_id="getTravelGuideForCity",
 )
@@ -147,7 +155,11 @@ async def get_travel_guide(city: str = Query(..., description="City name to sear
         raise HTTPException(status_code=404, detail=f"City '{city}' not found.")
     lat, lon = geocode["lat"], geocode["lon"]
     norm_city = geocode.get("display_name_city") or geocode.get("name") or city
-    country = geocode.get("display_name_country") or geocode.get("address", {}).get("country_code", "").upper() or "Unknown"
+    country = (
+        geocode.get("display_name_country")
+        or geocode.get("address", {}).get("country_code", "").upper()
+        or "Unknown"
+    )
 
     # 2) Fetch 5-day forecast from Open-Meteo
     daily_forecast = await _fetch_5day_forecast(lat, lon)
@@ -203,7 +215,12 @@ async def _geocode_city(city: str):
             item = items[0]
             address = item.get("address", {})
             # Extract a readable city and country if present
-            display_city = address.get("city") or address.get("town") or address.get("village") or item.get("display_name")
+            display_city = (
+                address.get("city")
+                or address.get("town")
+                or address.get("village")
+                or item.get("display_name")
+            )
             display_country = address.get("country")
             return {
                 "lat": float(item["lat"]),
@@ -229,7 +246,10 @@ async def _fetch_5day_forecast(lat: float, lon: float) -> List[DailyForecast]:
     params = {
         "latitude": lat,
         "longitude": lon,
-        "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode",
+        "daily": (
+            "temperature_2m_max,temperature_2m_min,"
+            "precipitation_probability_max,weathercode"
+        ),
         "timezone": "auto",
         "forecast_days": 5,
     }
@@ -241,8 +261,14 @@ async def _fetch_5day_forecast(lat: float, lon: float) -> List[DailyForecast]:
             data = resp.json()
             return map_open_meteo_to_daily_forecast(data)
         except httpx.HTTPStatusError as e:
-            raise HTTPException(status_code=502, detail=f"Weather provider error: {e.response.status_code}") from e
+            raise HTTPException(
+                status_code=502,
+                detail=f"Weather provider error: {e.response.status_code}",
+            ) from e
         except httpx.RequestError as e:
-            raise HTTPException(status_code=502, detail="Weather provider not reachable") from e
+            raise HTTPException(
+                status_code=502,
+                detail="Weather provider not reachable",
+            ) from e
         except Exception as e:
             raise HTTPException(status_code=502, detail="Unexpected weather provider error") from e

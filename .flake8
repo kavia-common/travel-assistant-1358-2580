@@ -1,0 +1,18 @@
+[flake8]
+max-line-length = 120
+extend-ignore =
+    # Whitespace before ':' (often false positives in type hints)
+    E203,
+    # Line break before binary operator (PEP8 vs Black style)
+    W503
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    build,
+    dist,
+    WeatherForecastService/interfaces
+per-file-ignores =
+    # Allow long lines in tests and generated files
+    WeatherForecastService/test_main.py:E501

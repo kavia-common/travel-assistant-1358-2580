@@ -118,26 +118,65 @@ def get_clothing_recommendations_for_forecast(forecast: List[DailyForecast]) -> 
     return recs
 
 
-def mock_popular_places_for_city(city: str, country: str) -> List[PopularPlace]:
+def mock_popular_places_for_city(
+    city: str,
+    country: str,
+) -> List[PopularPlace]:
     """
     Return a mocked set of popular places for a given city.
     TODO: Replace with a real data source (e.g., OpenTripMap, Wikipedia, Triposo) when keys and setup are available.
     """
     samples: Dict[str, List[Dict[str, str]]] = {
         "paris": [
-            {"name": "Eiffel Tower", "description": "Iconic wrought-iron lattice tower.", "category": "Landmark"},
-            {"name": "Louvre Museum", "description": "World's largest art museum.", "category": "Museum"},
-            {"name": "Notre-Dame Cathedral", "description": "Famous medieval Catholic cathedral.", "category": "Cathedral"},
+            {
+                "name": "Eiffel Tower",
+                "description": "Iconic wrought-iron lattice tower.",
+                "category": "Landmark",
+            },
+            {
+                "name": "Louvre Museum",
+                "description": "World's largest art museum.",
+                "category": "Museum",
+            },
+            {
+                "name": "Notre-Dame Cathedral",
+                "description": "Famous medieval Catholic cathedral.",
+                "category": "Cathedral",
+            },
         ],
         "new york": [
-            {"name": "Central Park", "description": "Urban park in Manhattan.", "category": "Park"},
-            {"name": "Statue of Liberty", "description": "Colossal neoclassical sculpture on Liberty Island.", "category": "Landmark"},
-            {"name": "Metropolitan Museum of Art", "description": "Vast collection of art from around the world.", "category": "Museum"},
+            {
+                "name": "Central Park",
+                "description": "Urban park in Manhattan.",
+                "category": "Park",
+            },
+            {
+                "name": "Statue of Liberty",
+                "description": "Colossal neoclassical sculpture on Liberty Island.",
+                "category": "Landmark",
+            },
+            {
+                "name": "Metropolitan Museum of Art",
+                "description": "Vast collection of art from around the world.",
+                "category": "Museum",
+            },
         ],
         "tokyo": [
-            {"name": "Senso-ji", "description": "Ancient Buddhist temple in Asakusa.", "category": "Temple"},
-            {"name": "Shinjuku Gyoen", "description": "Large park with traditional gardens.", "category": "Park"},
-            {"name": "Tokyo Skytree", "description": "Broadcasting and observation tower.", "category": "Landmark"},
+            {
+                "name": "Senso-ji",
+                "description": "Ancient Buddhist temple in Asakusa.",
+                "category": "Temple",
+            },
+            {
+                "name": "Shinjuku Gyoen",
+                "description": "Large park with traditional gardens.",
+                "category": "Park",
+            },
+            {
+                "name": "Tokyo Skytree",
+                "description": "Broadcasting and observation tower.",
+                "category": "Landmark",
+            },
         ],
     }
     key = city.strip().lower()
@@ -145,8 +184,20 @@ def mock_popular_places_for_city(city: str, country: str) -> List[PopularPlace]:
     if not places:
         # Provide a generic default
         places = [
-            {"name": f"City Museum of {city}", "description": "Local museum highlighting the city's history.", "category": "Museum"},
-            {"name": f"Central Park of {city}", "description": "Green space popular among locals and tourists.", "category": "Park"},
-            {"name": f"Old Town {city}", "description": "Historic district with cafes and boutiques.", "category": "Historic"},
+            {
+                "name": f"City Museum of {city}",
+                "description": "Local museum highlighting the city's history.",
+                "category": "Museum",
+            },
+            {
+                "name": f"Central Park of {city}",
+                "description": "Green space popular among locals and tourists.",
+                "category": "Park",
+            },
+            {
+                "name": f"Old Town {city}",
+                "description": "Historic district with cafes and boutiques.",
+                "category": "Historic",
+            },
         ]
     return [PopularPlace(**p) for p in places]
