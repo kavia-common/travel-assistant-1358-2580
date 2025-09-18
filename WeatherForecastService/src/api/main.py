@@ -1,3 +1,22 @@
+"""FastAPI ASGI application for WeatherForecastService.
+
+This module exposes the ASGI app object `app` used by uvicorn and other ASGI servers.
+
+Usage:
+- Start locally from the WeatherForecastService directory:
+    uvicorn src.api.main:app --host 0.0.0.0 --port 3000 --reload
+- Or use the convenience script which sets PYTHONPATH:
+    bash ./run.sh
+
+OpenAPI:
+- Interactive docs: /docs
+- OpenAPI JSON: /openapi.json
+
+Notes:
+- This service makes outbound calls to Nominatim (geocoding) and Open-Meteo (weather).
+- If running in an environment without egress network access, requests may fail with 502,
+  which is handled gracefully by the routes and tests.
+"""
 import os
 from typing import List
 
